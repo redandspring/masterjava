@@ -9,7 +9,7 @@ import java.util.concurrent.Executors;
  * 03.07.2016
  */
 public class MainMatrix {
-    private static final int MATRIX_SIZE = 1000;
+    private static final int MATRIX_SIZE = 1010;
     private static final int THREAD_NUMBER = 10;
 
     private final static ExecutorService executor = Executors.newFixedThreadPool(MainMatrix.THREAD_NUMBER);
@@ -21,18 +21,18 @@ public class MainMatrix {
         double singleThreadSum = 0.;
         double concurrentThreadSum = 0.;
         int count = 1;
-        while (count < 6) {
+        while (count < 5) {
             System.out.println("Pass " + count);
             long start = System.currentTimeMillis();
             final int[][] matrixC = MatrixUtil.singleThreadMultiply(matrixA, matrixB);
             double duration = (System.currentTimeMillis() - start) / 1000.;
-            out("Single thread time, sec: %.3f", duration);
+            out(": %.3f :Single thread time, sec", duration);
             singleThreadSum += duration;
 
             start = System.currentTimeMillis();
             final int[][] concurrentMatrixC = MatrixUtil.concurrentMultiply(matrixA, matrixB, executor);
             duration = (System.currentTimeMillis() - start) / 1000.;
-            out("Concurrent thread time, sec: %.3f", duration);
+            out(": %.3f :Concurrent thread time, sec", duration);
             concurrentThreadSum += duration;
 
             if (!MatrixUtil.compare(matrixC, concurrentMatrixC)) {
@@ -42,8 +42,8 @@ public class MainMatrix {
             count++;
         }
         executor.shutdown();
-        out("\nAverage single thread time, sec: %.3f", singleThreadSum / 5.);
-        out("Average concurrent thread time, sec: %.3f", concurrentThreadSum / 5.);
+        out("\n=== %.3f === Average single thread time, sec", singleThreadSum / 4.);
+        out("=== %.3f === Average concurrent thread time, sec", concurrentThreadSum / 4.);
     }
 
     private static void out(String format, double ms) {
